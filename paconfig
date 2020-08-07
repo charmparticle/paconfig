@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 echo "Choose a sound card: "
 card=$(pactl list short cards | dmenu)
-card=$(echo "$card" | awk '{print $1}')
+card_num=$(echo "$card" | awk '{print $1}')
+card_desc=$(echo "$card" | awk '{print $2}')
 echo "$card"
 echo "Now, choose your desired configuration: "
 config=$(pactl list cards \
-    | grep -A 100 "#$card" \
+    | grep -A 100 "#$card_num" \
     | sed -e 's/\t/#/g' \
     | tr -d '\n' \
     | grep -o "Profiles.*Active" \
@@ -13,11 +14,11 @@ config=$(pactl list cards \
     | sed -e 's/#Active//' -e 's/Profiles://' -e 's/##/\n/g' \
     | cut -d ' ' -f 1 \
     | sed 's/:$//g' | dmenu)
-echo "set card $card to $config? (y/n)"
+echo "set card $card_desc to $config? (y/n)"
 read cmd
 if [[ "$cmd" == "y" ]]
 then
-    pactl set-card-profile $card $config
+    pactl set-card-profile $card_num $config
     pactl list short sinks
 else
     echo "doing nothing."
