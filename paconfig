@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Choose a sound card: "
-card=$(pactl list short cards | dmenu)
+card=$(pactl list short cards | slmenu)
 card_num=$(echo "$card" | awk '{print $1}')
 card_desc=$(echo "$card" | awk '{print $2}')
 echo "Now, choose your desired configuration: "
@@ -12,7 +12,7 @@ config=$(pactl list cards \
     | tr -d '\t' \
     | sed -e 's/#Active//' -e 's/Profiles://' -e 's/##/\n/g' \
     | cut -d ' ' -f 1 \
-    | sed 's/:$//g' | dmenu)
+    | sed 's/:$//g' | slmenu)
 echo "set card $card_desc to $config? (y/n)"
 read cmd
 if [[ "$cmd" == "y" ]]
