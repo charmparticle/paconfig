@@ -3,7 +3,6 @@ echo "Choose a sound card: "
 card=$(pactl list short cards | dmenu)
 card_num=$(echo "$card" | awk '{print $1}')
 card_desc=$(echo "$card" | awk '{print $2}')
-echo "$card"
 echo "Now, choose your desired configuration: "
 config=$(pactl list cards \
     | grep -A 100 "#$card_num" \
